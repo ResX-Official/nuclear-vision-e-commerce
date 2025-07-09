@@ -57,7 +57,6 @@ export function ContentManagement() {
   const [selectedPage, setSelectedPage] = useState("home")
   const [isAddSectionOpen, setIsAddSectionOpen] = useState(false)
   const [editingSection, setEditingSection] = useState<any>(null)
-  const [newSectionType, setNewSectionType] = useState("")
 
   const { pageContents, addPageSection, updatePageContent, deletePageSection, reorderSections } = useAdminStore()
   const { toast } = useToast()
@@ -67,14 +66,16 @@ export function ContentManagement() {
   const handleAddSection = (type: string) => {
     const defaultContent = getDefaultContent(type)
     const newSection = {
+      page: selectedPage,
       section: `section-${Date.now()}`,
       content: defaultContent,
       type: type as any,
       order: currentPageSections.length + 1,
       isActive: true,
     }
-
-    addPageSection(selectedPage, newSection)
+    
+    addPageSection(type, newSection)
+    
     setIsAddSectionOpen(false)
     toast({
       title: "Section Added",
@@ -161,183 +162,6 @@ export function ContentManagement() {
         }
       default:
         return {}
-    }
-  }
-
-  const renderSectionEditor = (section: any) => {
-    switch (section.type) {
-      case "hero":
-        return (
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>Title</Label>
-              <Input
-                value={section.content.title || ""}
-                onChange={(e) =>
-                  setEditingSection({
-                    ...section,
-                    content: { ...section.content, title: e.target.value },
-                  })
-                }
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Subtitle</Label>
-              <Input
-                value={section.content.subtitle || ""}
-                onChange={(e) =>
-                  setEditingSection({
-                    ...section,
-                    content: { ...section.content, subtitle: e.target.value },
-                  })
-                }
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Button Text</Label>
-                <Input
-                  value={section.content.buttonText || ""}
-                  onChange={(e) =>
-                    setEditingSection({
-                      ...section,
-                      content: { ...section.content, buttonText: e.target.value },
-                    })
-                  }
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Button Link</Label>
-                <Input
-                  value={section.content.buttonLink || ""}
-                  onChange={(e) =>
-                    setEditingSection({
-                      ...section,
-                      content: { ...section.content, buttonLink: e.target.value },
-                    })
-                  }
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label>Background Image URL</Label>
-              <Input
-                value={section.content.backgroundImage || ""}
-                onChange={(e) =>
-                  setEditingSection({
-                    ...section,
-                    content: { ...section.content, backgroundImage: e.target.value },
-                  })
-                }
-              />
-            </div>
-          </div>
-        )
-      case "text":
-        return (
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>Title</Label>
-              <Input
-                value={section.content.title || ""}
-                onChange={(e) =>
-                  setEditingSection({
-                    ...section,
-                    content: { ...section.content, title: e.target.value },
-                  })
-                }
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Content</Label>
-              <Textarea
-                rows={6}
-                value={section.content.content || ""}
-                onChange={(e) =>
-                  setEditingSection({
-                    ...section,
-                    content: { ...section.content, content: e.target.value },
-                  })
-                }
-              />
-            </div>
-          </div>
-        )
-      case "cta":
-        return (
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>Title</Label>
-              <Input
-                value={section.content.title || ""}
-                onChange={(e) =>
-                  setEditingSection({
-                    ...section,
-                    content: { ...section.content, title: e.target.value },
-                  })
-                }
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Subtitle</Label>
-              <Input
-                value={section.content.subtitle || ""}
-                onChange={(e) =>
-                  setEditingSection({
-                    ...section,
-                    content: { ...section.content, subtitle: e.target.value },
-                  })
-                }
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Button Text</Label>
-                <Input
-                  value={section.content.buttonText || ""}
-                  onChange={(e) =>
-                    setEditingSection({
-                      ...section,
-                      content: { ...section.content, buttonText: e.target.value },
-                    })
-                  }
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Button Link</Label>
-                <Input
-                  value={section.content.buttonLink || ""}
-                  onChange={(e) =>
-                    setEditingSection({
-                      ...section,
-                      content: { ...section.content, buttonLink: e.target.value },
-                    })
-                  }
-                />
-              </div>
-            </div>
-          </div>
-        )
-      default:
-        return (
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>Custom Content (JSON)</Label>
-              <Textarea
-                rows={8}
-                value={JSON.stringify(section.content, null, 2)}
-                onChange={(e) => {
-                  try {
-                    const content = JSON.parse(e.target.value)
-                    setEditingSection({ ...section, content })
-                  } catch (error) {
-                    // Invalid JSON, don't update
-                  }
-                }}
-              />
-            </div>
-          </div>
-        )
     }
   }
 
@@ -438,144 +262,74 @@ export function ContentManagement() {
           </div>
         </CardHeader>
         <CardContent>
-          {currentPageSections.length === 0 ? (
-            <div className="text-center py-12">
-              <Layout className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No sections yet</h3>
-              <p className="text-gray-500 mb-4">Add your first section to get started</p>
-              <Button
-                onClick={() => setIsAddSectionOpen(true)}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0"
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Add Section
-              </Button>
-            </div>
-          ) : (
-            <DragDropContext onDragEnd={handleDragEnd}>
-              <Droppable droppableId="sections">
-                {(provided) => (
-                  <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-4">
-                    {currentPageSections.map((section, index) => (
-                      <Draggable key={section.id} draggableId={section.id} index={index}>
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            className={cn(
-                              "p-6 bg-white border-2 border-gray-100 rounded-xl transition-all duration-200",
-                              snapshot.isDragging ? "shadow-lg scale-[1.02]" : "hover:shadow-md"
-                            )}
-                          >
-                            <div className="flex items-center justify-between mb-4">
-                              <div className="flex items-center space-x-3">
-                                <div
-                                  {...provided.dragHandleProps}
-                                  className="p-2 text-gray-400 hover:text-gray-600 cursor-grab"
-                                >
-                                  <GripVertical className="h-5 w-5" />
-                                </div>
-                                <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
-                                  {sectionTypes.find(t => t.id === section.type)?.icon && (\
-                                    <sectionTypes.find(t => t.id === section.type)!.icon className="h-4 w-4 text-white" />
-                                  )}
-                                </div>
-                                <div>
-                                  <h3 className="font-medium text-gray-900">
-                                    {sectionTypes.find(t => t.id === section.type)?.name || 'Custom Section'}
-                                  </h3>
-                                  <p className="text-sm text-gray-500">Section {section.order}</p>
-                                </div>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="sections">
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-4">
+                  {currentPageSections.map((section, index) => (
+                    <Draggable key={section.id} draggableId={section.id} index={index}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          className={cn(
+                            "p-6 bg-white border-2 border-gray-100 rounded-xl transition-all duration-200",
+                            snapshot.isDragging ? "shadow-lg scale-[1.02]" : "hover:shadow-md"
+                          )}
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center space-x-3">
+                              <div
+                                {...provided.dragHandleProps}
+                                className="p-2 text-gray-400 hover:text-gray-600 cursor-grab"
+                              >
+                                <GripVertical className="h-5 w-5" />
                               </div>
-                              <div className="flex items-center space-x-2">
-                                <Switch
-                                  checked={section.isActive}
-                                  onCheckedChange={(checked) => {
-                                    updatePageContent(section.id, { ...section.content, isActive: checked })
-                                  }}
-                                />
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => setEditingSection(section)}
-                                >
-                                  <Edit className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleDeleteSection(section.id)}
-                                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
+                              <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+                                {(() => {
+                                  const Icon = sectionTypes.find(t => t.id === section.type)?.icon
+                                  return Icon ? <Icon className="h-4 w-4 text-white" /> : null
+                                })()}
+                              </div>
+                              <div>
+                                <h3 className="font-medium text-gray-900">
+                                  {sectionTypes.find(t => t.id === section.type)?.name || 'Custom Section'}
+                                </h3>
+                                <p className="text-sm text-gray-500">Section {section.order}</p>
                               </div>
                             </div>
-                            
-                            {/* Section Preview */}
-                            <div className="bg-gray-50 rounded-lg p-4">
-                              <div className="text-sm text-gray-600">
-                                {section.type === 'hero' && (
-                                  <div>
-                                    <strong>Title:</strong> {section.content.title}<br />
-                                    <strong>Subtitle:</strong> {section.content.subtitle}
-                                  </div>
-                                )}
-                                {section.type === 'text' && (
-                                  <div>
-                                    <strong>Title:</strong> {section.content.title}<br />
-                                    <strong>Content:</strong> {section.content.content?.substring(0, 100)}...
-                                  </div>
-                                )}
-                                {section.type === 'cta' && (
-                                  <div>
-                                    <strong>Title:</strong> {section.content.title}<br />
-                                    <strong>Button:</strong> {section.content.buttonText}
-                                  </div>
-                                )}
-                              </div>
+                            <div className="flex items-center space-x-2">
+                              <Switch
+                                checked={section.isActive}
+                                onCheckedChange={(checked) => {
+                                  updatePageContent(section.id, { ...section.content, isActive: checked })
+                                }}
+                              />
+                              <Button variant="ghost" size="sm" onClick={() => setEditingSection(section)}>
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDeleteSection(section.id)}
+                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
                             </div>
                           </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
-          )}
+                          {/* Section Preview (optional) */}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         </CardContent>
       </Card>
-
-      {/* Edit Section Dialog */}
-      <Dialog open={!!editingSection} onOpenChange={() => setEditingSection(null)}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Edit Section</DialogTitle>
-            <DialogDescription>
-              Modify the content of your {editingSection?.type} section
-            </DialogDescription>
-          </DialogHeader>
-          {editingSection && (
-            <div className="space-y-6">
-              {renderSectionEditor(editingSection)}
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setEditingSection(null)}>
-                  Cancel
-                </Button>
-                <Button
-                  onClick={() => handleUpdateSection(editingSection.id, editingSection.content)}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0"
-                >
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Changes
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
