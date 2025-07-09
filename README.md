@@ -1,30 +1,82 @@
-# Figma to E-commerce
+# Nuclear Vision E-Commerce
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/chigozieebube9-gmailcoms-projects
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/chigozieebube9-gmailcoms-projects/v0-figma-to-e-commerce)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/DBzFTQzlPq2)
+---
 
-## Overview
+## 🚀 Overview
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+**Nuclear Vision E-Commerce** is a modern, full-featured e-commerce platform built with Next.js, React, and Tailwind CSS. It offers a seamless shopping experience, robust admin tools, and a beautiful, responsive UI. Perfect for tech enthusiasts, online retailers, and developers looking for a scalable e-commerce solution.
 
-## Deployment
+---
 
-Your project is live at:
+## ✨ Features
 
-**[https://vercel.com/chigozieebube9-gmailcoms-projects/v0-figma-to-e-commerce](https://vercel.com/chigozieebube9-gmailcoms-projects/v0-figma-to-e-commerce)**
+- 🛒 Modern product catalog with categories & search
+- 🔍 Advanced filtering & sorting
+- 🛍️ Shopping cart & wishlist
+- 🔐 User authentication & account management
+- 📦 Order management & checkout flow
+- 📊 Admin dashboard for analytics, products, users, and orders
+- 📱 Fully responsive & mobile-friendly
+- ⚡ Blazing fast with Next.js & Vercel
 
-## Build your app
+---
 
-Continue building your app on:
+## 🌐 Live Demo
 
-**[https://v0.dev/chat/projects/DBzFTQzlPq2](https://v0.dev/chat/projects/DBzFTQzlPq2)**
+[View the live site]
 
-## How It Works
+---
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## 🖼️ Screenshots
+
+<!-- Add your screenshots here -->
+![Home Page](public/images/hero-laptop.jpg)
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js 13+
+- **Frontend:** React, Tailwind CSS
+- **State Management:** React Context/Custom Hooks
+- **Deployment:** Vercel
+- **Other:** TypeScript, pnpm
+
+---
+
+## 🏁 Getting Started
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/ResX-Official/nuclear-vision-e-commerce.git
+   cd nuclear-vision-e-commerce
+   ```
+2. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
+3. **Run the development server:**
+   ```bash
+   pnpm dev
+   ```
+4. **Open [http://localhost:3000](http://localhost:3000) to view it in your browser.**
+
+---
+
+## 🚢 Deployment
+
+This project is ready to deploy on [Vercel](https://vercel.com/). Just connect your repo and deploy!
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/ResX-Official/nuclear-vision-e-commerce/issues) or submit a pull request.
+
+---
+
+## 📄 License
+
+This project is [MIT](LICENSE) licensed.
