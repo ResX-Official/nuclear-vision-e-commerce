@@ -220,7 +220,7 @@ export function Header() {
                     <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-48 bg-white shadow-lg border border-gray-200">
+                <DropdownMenuContent className="w-48">
                   {categories.map((category) => (
                     <DropdownMenuItem key={category.name} asChild>
                       <Link href={category.href}>{category.name}</Link>
