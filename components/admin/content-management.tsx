@@ -63,34 +63,26 @@ export function ContentManagement() {
 
   const currentPageSections = pageContents.filter((pc) => pc.page === selectedPage).sort((a, b) => a.order - b.order)
 
-  const handleAddSection = (type: string) => {
-    const defaultContent = getDefaultContent(type)
-    const newSection = {
-      page: selectedPage,
-      section: `section-${Date.now()}`,
-      content: defaultContent,
-      type: type as any,
-      order: currentPageSections.length + 1,
-      isActive: true,
-    }
-    
-    addPageSection(type, newSection)
-    
-    setIsAddSectionOpen(false)
-    toast({
-      title: "Section Added",
-      description: "New section has been added to the page.",
-    })
+ const handleAddSection = (type: string) => {
+  const defaultContent = getDefaultContent(type)
+  const newSection = {
+    page: selectedPage,
+    section: `section-${Date.now()}`,
+    content: defaultContent,
+    type: type as any,
+    order: currentPageSections.length + 1,
+    isActive: true,
   }
+  
+  addPageSection(selectedPage, newSection) // <-- use selectedPage, not type
+  
+  setIsAddSectionOpen(false)
+  toast({
+    title: "Section Added",
+    description: "New section has been added to the page.",
+  })
+}
 
-  const handleUpdateSection = (sectionId: string, content: any) => {
-    updatePageContent(sectionId, content)
-    setEditingSection(null)
-    toast({
-      title: "Section Updated",
-      description: "Section content has been updated.",
-    })
-  }
 
   const handleDeleteSection = (sectionId: string) => {
     deletePageSection(sectionId)
